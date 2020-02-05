@@ -1,0 +1,49 @@
+<h1><?= $collection->title ?></h1>
+<p><?php echo $this->escapeHtml($collection->description) ?></p>
+<?php if($userCanEdit): ?>
+<?= $this->partial('mkdf/core/partial/actions', [
+//    'class' => 'btn-group',
+    'buttons' => [
+        ['type'=>'warning','label'=>'Edit', 'icon' => 'edit',  'target'=> 'collection', 'params'=> ['id' => $collection->id, 'action' => 'edit']],
+        ['type'=>'danger','label'=>'Delete', 'icon' => 'delete', 'target'=> 'collection', 'params'=> ['id' => $collection->id, 'action' => 'delete-confirm']]
+    ]
+]); ?>
+<?php endif; ?>
+<h2>Datasets in this collection</h2>
+<?php if($userCanEdit): ?>
+<?= $this->partial('mkdf/core/partial/actions', [
+    'buttons'=>[
+        ['type'=>'warning','label'=>'Add', 'icon' => 'create', 'target'=> 'collection', 'params'=> ['id' => $collection->id, 'action' => 'select-datasets']],
+    ]
+]); ?>
+<?php endif; ?>
+<table class="table">
+    <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>UUID</th>
+        <th></th>
+    </tr>
+    <?php foreach ($datasets as $dataset) : ?>
+        <tr>
+            <td>
+                <?= $this->escapeHtml($dataset->title) ?>
+            </td>
+            <td><?= $this->escapeHtml($dataset->description) ?></td>
+            <td><?= $this->escapeHtml($dataset->uuid) ?></td>
+            <td><?php
+                $removeDatasetAction = [];
+                if ($userCanEdit){
+                    $removeDatasetAction = [
+                        'class'=>'btn-group-sm',
+                        'buttons'=>[
+                            ['type'=>'danger','label'=>'Remove', 'icon' => 'delete', 'target'=> 'collection', 'params'=> ['id' => $collection->id, 'action' => 'remove-dataset'], 'query' => ['dataset_id' => $dataset->id]],
+                        ]
+                    ];
+                    print($this->partial('mkdf/core/partial/actions', $removeDatasetAction)); 
+                }
+                ?>
+                </td>
+        </tr>
+    <?php endforeach; ?>
+</table>

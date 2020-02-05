@@ -1,0 +1,9 @@
+<h1>Delete Collection</h1>
+<?= $this->partial('mkdf/topics/partial/messages', ['messages' => $messages] ) ?>
+<?= $this->partial('mkdf/topics/partial/view-collection', ['collection' => $collection] ) ?>
+<!-- Token: <?= $token ?> -->
+<?= $this->partial('mkdf/topics/partial/actions', [
+    'buttons'=>[
+        ['type'=>'danger','label'=>'Yes, delete this collection', 'target'=> 'collection', 'params'=> ['id' => $collection->id, 'action' => 'delete'], 'query' => ['token' => $token]],
+            ['type'=>'secondary','label'=>'No, go back please', 'target'=> 'collection', 'params'=> ['id' => $collection->id, 'action' => 'details']]]
+            ] ); ?>

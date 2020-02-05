@@ -1,0 +1,27 @@
+<h1>Collections</h1>
+<?= $this->partial('mkdf/core/partial/actions', $actions); ?>
+<table class="table">
+    <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Datasets</th>
+    </tr>
+    <?php foreach ($collections as $collection) : ?>
+        <tr>
+            <td>
+                <a href="<?= $this->url('collection', ['action' => 'details', 'id' => $collection->id]) ?>">
+                    <?= $this->escapeHtml($collection->title) ?>
+                </a>
+            </td>
+            <td><?= $this->escapeHtml($collection->description) ?></td>
+            <td><?= $this->escapeHtml((int)$collection->dataset_count) ?></td>
+        </tr>
+    <?php endforeach; ?>
+
+</table>
+
+
+<?= $this->paginationControl($collections,
+    'Sliding',
+    'application/partial/paginator',
+    ['route' => 'collection']); ?>

@@ -1,0 +1,19 @@
+<table class="table">
+    <tr>
+        <th>Collection </th>
+        <th>Date</th>
+    </tr>
+    <?php foreach ($collections as $collection) : ?>
+        <tr>
+            <td>
+                <a href="<?= $this->url('collection', ['action' => 'details', 'id' => $collection->id]) ?>">
+                    <?= $this->escapeHtml($collection->title) ?>
+                </a>
+            </td>
+
+            <td><?= $this->escapeHtml($collection->date_created) ?></td>
+
+        </tr>
+    <?php endforeach; ?>
+
+</table>

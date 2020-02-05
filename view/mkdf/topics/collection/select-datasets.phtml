@@ -1,0 +1,32 @@
+<h1><?= $collection->title ?></h1>
+<p><?php echo $this->escapeHtml($collection->description) ?></p>
+<h2>Datasets not in this collection</h2>
+<?php if($userCanEdit): ?>
+<form method="POST">
+<button type="submit" class="btn btn-primary">Add</button>
+<a class="btn btn-secondary" href="<?=$this->url('collection',['action'=>'details','id'=>$collection->id])?>">Cancel</a>
+<table class="table">
+    <tr>
+        <th></th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>UUID</th>
+    </tr>
+    <?php foreach ($datasets as $dataset) : ?>
+        <tr>
+            <td>
+                <input type="checkbox" name="dataset[]" value="<?=$dataset->id?>" />
+            </td>
+            <td>
+                <?= $this->escapeHtml($dataset->title) ?>
+            </td>
+            <td><?= $this->escapeHtml($dataset->description) ?></td>
+            <td><?= $this->escapeHtml($dataset->uuid) ?></td>
+        </tr>
+    <?php endforeach; ?>
+</table>
+<button type="submit" class="btn btn-primary">Add</button>
+<a class="btn btn-secondary" href="<?=$this->url('collection',['action'=>'details','id'=>$collection->id])?>">Cancel</a>
+<form>
+    
+<?php endif; ?>

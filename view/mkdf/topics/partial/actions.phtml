@@ -1,0 +1,8 @@
+<div class="btn-group <?=$class?>" role="group" aria-label="<?= $label?>">
+<?php foreach($buttons as $button): ?>
+  <a 
+      class="btn btn-<?= $button['type'];?>"
+      href="<?= $this->url( $button['target'], $button['params'], [ 'query' => $button['query'] ] ); ?>"
+      ><?= $this->escapeHtml($button['label']);?></a>
+<?php endforeach; ?>
+</div>
