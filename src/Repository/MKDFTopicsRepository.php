@@ -37,6 +37,7 @@ class MKDFTopicsRepository implements MKDFTopicsRepositoryInterface
     }
     private function buildQueries(){
         $this->_queries = [
+            'isReady'           => 'SELECT ID FROM collection LIMIT 1',
             //'allCollections'       => 'SELECT id,title,description,user_id,date_created,date_modified FROM collection ORDER BY date_created DESC',
             'allCollections'        => 'SELECT id,title,description,user_id,date_created,date_modified, COALESCE(x.cnt,0) AS dataset_count '.
                 'FROM collection '.
@@ -261,6 +262,19 @@ class MKDFTopicsRepository implements MKDFTopicsRepositoryInterface
         $statement = $this->_adapter->createStatement($this->getQuery('removeFromCollection'));
         $statement->execute(['dataset_id'=>$dataset, 'collection_id'=>$id]);
         // FIXME Need to decide whether return anything useful
+        return true;
+    }
+    
+    public function init(){
+        try {
+            $statement = $this->_adapter->createStatement($this->getQuery('isReady'));
+            $result    = $statement->execute();
+            return false;
+        } catch (\Exception $e) {
+            // XXX Maybe raise a warning here?
+        }
+        $sql = file_get_contents(dirname(__FILE__) . '/../../sql/setup.sql');
+        $this->_adapter->getDriver()->getConnection()->execute($sql);
         return true;
     }
 }
