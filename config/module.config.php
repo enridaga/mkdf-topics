@@ -9,7 +9,8 @@ use Zend\Router\Http\Segment;
 return [
     'controllers' => [
         'factories' => [
-            Controller\CollectionController::class => Controller\Factory\CollectionControllerFactory::class
+            Controller\CollectionController::class => Controller\Factory\CollectionControllerFactory::class,
+            Controller\DatasetCollectionsController::class => Controller\Factory\DatasetCollectionsControllerFactory::class,
         ],
     ],
     'service_manager' => [
@@ -17,7 +18,8 @@ return [
             Repository\MKDFTopicsRepositoryInterface::class => Repository\MKDFTopicsRepository::class
         ],
         'factories' => [
-            Repository\MKDFTopicsRepository::class => Repository\Factory\MKDFTopicsRepositoryFactory::class
+            Repository\MKDFTopicsRepository::class => Repository\Factory\MKDFTopicsRepositoryFactory::class,
+            Feature\TopicsFeature::class => Feature\Factory\TopicsFeatureFactory::class,
         ]
     ],
     'router' => [
@@ -33,6 +35,20 @@ return [
                     'defaults' => [
                         'controller' => Controller\CollectionController::class,
                         'action' => 'index'
+                    ],
+                ],
+            ],
+            'dataset-collections' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route' => '/dataset/collections/:action/:id',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[a-zA-Z0-9_-]*',
+                    ],
+                    'defaults' => [
+                        'controller' => Controller\DatasetCollectionsController::class,
+                        'action' => 'details'
                     ],
                 ],
             ],
