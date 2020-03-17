@@ -1,1 +1,12 @@
-HELLO, This is the details view for dataset collections and topics/tags
+<h1><?= $dataset->title ?></h1>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <?= $this->partial('mkdf/datasets/partial/dataset-features', ['features' => $features, 'dataset_id' => $dataset->id] ) ?>
+        </div>
+        <div class="col-md-9">
+            <h2>Tags and collections</h2>
+            Some stuff here
+        </div>
+    </div>
+</div>

@@ -3,7 +3,8 @@
 namespace MKDF\Topics\Controller\Factory;
 
 use Interop\Container\ContainerInterface;
-use MKDF\Core\Repository\MKDFCoreRepositoryInterface;
+use MKDF\Datasets\Repository\MKDFDatasetRepositoryInterface;
+use MKDF\Datasets\Service\DatasetPermissionManagerInterface;
 use MKDF\Topics\Controller\DatasetCollectionsController;
 use MKDF\Topics\Repository\MKDFTopicsRepositoryInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
@@ -14,7 +15,8 @@ class DatasetCollectionsControllerFactory implements FactoryInterface
     {
         $config = $container->get("Config");
         $repository = $container->get(MKDFTopicsRepositoryInterface::class);
-        $core_repository = $container->get(MKDFCoreRepositoryInterface::class);
-        return new DatasetCollectionsController($repository, $core_repository, $config);
+        $dataset_repository = $container->get(MKDFDatasetRepositoryInterface::class);
+        $permissionManager = $container->get(DatasetPermissionManagerInterface::class);
+        return new DatasetCollectionsController($repository, $dataset_repository, $config, $permissionManager);
     }
 }
