@@ -87,6 +87,12 @@ return [
                 // Allow authenticated users to ...
                 ['actions' => ['add','edit','delete','delete-confirm'], 'allow' => '@']
             ],
+            Controller\DatasetCollectionsController::class => [
+                // Allow anyone to visit "index" and "about" actions
+                ['actions' => ['details'], 'allow' => '@'],
+                // Allow authenticated users to ...
+                ['actions' => ['add','edit','delete','delete-confirm'], 'allow' => '@']
+            ],
         ]
     ],
     'navigation' => [

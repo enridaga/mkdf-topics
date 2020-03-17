@@ -24,10 +24,10 @@ class TopicsFeature implements DatasetsFeatureInterface
         return 'edit';
     }
     public function getViewHref($id){
-        return '/dataset/collection/details/'.$id;
+        return '/dataset/collections/details/'.$id;
     }
     public function getEditHref($id){
-        return '/dataset/stream/edit/'.$id;
+        return '/dataset/collections/edit/'.$id;
     }
     public function hasFeature($id){
         return true;
