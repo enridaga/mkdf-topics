@@ -37,7 +37,7 @@ class DatasetCollectionsController extends AbstractActionController
             'buttons' => []
         ];
         if ($can_edit) {
-            $actions['buttons'][] = ['type'=>'warning','label'=>'Edit', 'icon'=>'edit', 'target'=> 'dataset-collections', 'params'=> ['id' => $dataset->id, 'action' => 'edit']];
+            //$actions['buttons'][] = ['type'=>'warning','label'=>'Edit', 'icon'=>'edit', 'target'=> 'dataset-collections', 'params'=> ['id' => $dataset->id, 'action' => 'edit']];
         }
         if ($can_view) {
             return new ViewModel([

@@ -17,8 +17,12 @@
                         <table class="table table-sm">
                             <?php foreach ($collections as $collection) : ?>
                                 <tr>
-                                    <td><?= $this->escapeHtml($collection['title']) ?></td>
+                                    <?php
+                                    $url = $this->url( 'collection', ['action' => 'details', 'id' => $collection->id]);
+                                    ?>
+                                    <td><a href="<?= $url ?>"><?= $this->escapeHtml($collection['title']) ?></a></td>
                                     <td><?= $this->escapeHtml($collection['description']) ?></td>
+
                                 </tr>
                             <?php endforeach; ?>
                         </table>
@@ -27,6 +31,8 @@
                     <?php endif; ?>
                 </div>
             </div>
+            <hr />
+            <p><em><a href="<?= $this->url( 'collection', ['action' => 'index']) ?>">Datasets can be added or removed from collections here.</a></em></p>
         </div>
     </div>
 </div>

@@ -81,7 +81,7 @@ class MKDFTopicsRepository implements MKDFTopicsRepositoryInterface
                     ' (SELECT dataset_id FROM collection__dataset '.
                     ' WHERE collection_id = ' . $this->fp('collection_id') . ') ',
             'removeFromCollection' => 'DELETE FROM collection__dataset WHERE collection_id = ' . $this->fp('collection_id') . ' AND dataset_id =' . $this->fp('dataset_id'),
-            'datasetCollections' => 'SELECT c.title, c.description FROM collection c, collection__dataset cd '.
+            'datasetCollections' => 'SELECT c.id, c.title, c.description FROM collection c, collection__dataset cd '.
                     ' WHERE c.id = cd.collection_id AND cd.dataset_id = '.$this->fp('dataset_id'),
 
         ];
