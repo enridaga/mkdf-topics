@@ -9,6 +9,7 @@ namespace MKDF\Topics;
 
 use MKDF\Datasets\Service\DatasetsFeatureManagerInterface;
 use MKDF\Topics\Feature\TopicsFeature;
+use MKDF\Topics\Feature\TagsFeature;
 use Zend\Mvc\MvcEvent;
 use MKDF\Topics\Repository\MKDFTopicsRepositoryInterface;
 
@@ -26,6 +27,7 @@ class Module
         $repository->init();
         $featureManager = $event->getApplication()->getServiceManager()->get(DatasetsFeatureManagerInterface::class);
         $featureManager->registerFeature($event->getApplication()->getServiceManager()->get(TopicsFeature::class));
+        $featureManager->registerFeature($event->getApplication()->getServiceManager()->get(TagsFeature::class));
     }
 
 }

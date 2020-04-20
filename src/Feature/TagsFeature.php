@@ -5,7 +5,7 @@ namespace MKDF\Topics\Feature;
 use MKDF\Datasets\Repository\MKDFDatasetRepositoryInterface;
 use MKDF\Datasets\Service\DatasetsFeatureInterface;
 
-class TopicsFeature implements DatasetsFeatureInterface
+class TagsFeature implements DatasetsFeatureInterface
 {
     private $active = false;
 
@@ -15,7 +15,7 @@ class TopicsFeature implements DatasetsFeatureInterface
     }
 
     public function getController() {
-        return \MKDF\Topics\Controller\DatasetCollectionsController::class;
+        return \MKDF\Topics\Controller\DatasetTagsController::class;
     }
     public function getViewAction(){
         return 'details';
@@ -24,16 +24,16 @@ class TopicsFeature implements DatasetsFeatureInterface
         return 'edit';
     }
     public function getViewHref($id){
-        return '/dataset/collections/details/'.$id;
+        return '/dataset/tags/details/'.$id;
     }
     public function getEditHref($id){
-        return '/dataset/collections/edit/'.$id;
+        return '/dataset/tags/edit/'.$id;
     }
     public function hasFeature($id){
         return true;
     }
     public function getLabel(){
-        return '<i class="fas fa-archive"></i> Collections';
+        return '<i class="fas fa-tags"></i> Tags';
     }
     public function isActive(){
         return $this->active;

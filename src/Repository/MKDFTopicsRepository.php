@@ -257,6 +257,24 @@ class MKDFTopicsRepository implements MKDFTopicsRepositoryInterface
         }
         return [];
     }
+
+    public function datasetTags($datasetId) {
+        $tags = [];
+        $parameters = [
+            'dataset_id' => $datasetId,
+        ];
+        $statement = $this->_adapter->createStatement($this->getQuery('datasetCollections'));
+        $result    = $statement->execute($parameters);
+        if ($result instanceof ResultInterface && $result->isQueryResult()) {
+            $resultSet = new ResultSet;
+            $resultSet->initialize($result);
+            foreach ($resultSet as $row) {
+                array_push($tags, $row);
+            }
+            return $tags;
+        }
+        return [];
+    }
     
     /**
      * @return 
