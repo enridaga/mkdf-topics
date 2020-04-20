@@ -30,6 +30,7 @@ class DatasetCollectionsController extends AbstractActionController
         $user_id = $this->currentUser()->getId();
         $can_view = $this->_permissionManager->canView($dataset,$user_id);
         $can_edit = $this->_permissionManager->canEdit($dataset,$user_id);
+        $collections = $this->_repository->datasetCollections($id);
         $actions = [
             'label' => 'Actions',
             'class' => '',
@@ -41,6 +42,7 @@ class DatasetCollectionsController extends AbstractActionController
         if ($can_view) {
             return new ViewModel([
                 'dataset' => $dataset,
+                'collections' => $collections,
                 'features' => $this->datasetsFeatureManager()->getFeatures($id),
                 'actions' => $actions
             ]);

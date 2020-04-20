@@ -33,7 +33,7 @@ class TopicsFeature implements DatasetsFeatureInterface
         return true;
     }
     public function getLabel(){
-        return '<i class="fas fa-tags"></i> Tags and Collections';
+        return '<i class="fas fa-tags"></i> Collections';
     }
     public function isActive(){
         return $this->active;

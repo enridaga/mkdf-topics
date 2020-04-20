@@ -5,10 +5,28 @@
             <?= $this->partial('mkdf/datasets/partial/dataset-features', ['features' => $features, 'dataset_id' => $dataset->id] ) ?>
         </div>
         <div class="col-md-9">
-            <h2>Tags and collections</h2>
+            <h2>Collections</h2>
             <?= $this->partial('mkdf/core/partial/actions', $actions); ?>
-            <br />
-            Some stuff here
+
+            <div class="card">
+                <div class="card-header">
+                    The dataset appears in the following collections
+                </div>
+                <div class="card-body">
+                    <?php if (count($collections) > 0): ?>
+                        <table class="table table-sm">
+                            <?php foreach ($collections as $collection) : ?>
+                                <tr>
+                                    <td><?= $this->escapeHtml($collection['title']) ?></td>
+                                    <td><?= $this->escapeHtml($collection['description']) ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </table>
+                    <?php else: ?>
+                        <em>This dataset has not yet been added to a collection.</em>
+                    <?php endif; ?>
+                </div>
+            </div>
         </div>
     </div>
 </div>
