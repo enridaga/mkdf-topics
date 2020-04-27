@@ -83,7 +83,15 @@ class MKDFTopicsRepository implements MKDFTopicsRepositoryInterface
             'removeFromCollection' => 'DELETE FROM collection__dataset WHERE collection_id = ' . $this->fp('collection_id') . ' AND dataset_id =' . $this->fp('dataset_id'),
             'datasetCollections' => 'SELECT c.id, c.title, c.description FROM collection c, collection__dataset cd '.
                     ' WHERE c.id = cd.collection_id AND cd.dataset_id = '.$this->fp('dataset_id'),
-
+            'datasetTags' => 'SELECT dt.id, t.name FROM tag t, dataset__tag dt WHERE t.id = dt.tag_id AND dt.dataset_id = '.$this->fp('dataset_id'),
+            'allTags' => 'SELECT name FROM tag',
+            'getDatasetTag' => 'SELECT d.id FROM dataset__tag d, tag t WHERE d.dataset_id = '.$this->fp('dataset_id').
+                ' AND t.name = '.$this->fp('tag_name').' AND d.tag_id = t.id',
+            'insertDatasetTag' => 'INSERT INTO dataset__tag (dataset_id, tag_id) '.
+                'SELECT '.$this->fp('dataset_id').', id FROM tag WHERE name = '.$this->fp('tag_name'),
+            'insertTag' => 'INSERT INTO tag (name) VALUES ('.$this->fp('name').') '.
+                'ON DUPLICATE KEY UPDATE name = '.$this->fp('name'),
+            'deleteDatasetTag' => 'DELETE FROM dataset__tag WHERE id = '.$this->fp('id'),
         ];
     }
 
@@ -263,7 +271,7 @@ class MKDFTopicsRepository implements MKDFTopicsRepositoryInterface
         $parameters = [
             'dataset_id' => $datasetId,
         ];
-        $statement = $this->_adapter->createStatement($this->getQuery('datasetCollections'));
+        $statement = $this->_adapter->createStatement($this->getQuery('datasetTags'));
         $result    = $statement->execute($parameters);
         if ($result instanceof ResultInterface && $result->isQueryResult()) {
             $resultSet = new ResultSet;
@@ -274,6 +282,62 @@ class MKDFTopicsRepository implements MKDFTopicsRepositoryInterface
             return $tags;
         }
         return [];
+    }
+
+    public function getAllTags() {
+        $tags = [];
+        $parameters = [];
+        $statement = $this->_adapter->createStatement($this->getQuery('allTags'));
+        $result    = $statement->execute($parameters);
+        if ($result instanceof ResultInterface && $result->isQueryResult()) {
+            $resultSet = new ResultSet;
+            $resultSet->initialize($result);
+            foreach ($resultSet as $row) {
+                array_push($tags, $row['name']);
+            }
+        }
+        return $tags;
+    }
+
+    public function addDatasetTag($datasetId, $tagName) {
+        //First, check if this dataset/tag combo already exists...
+        $parameters = [
+            'dataset_id' => $datasetId,
+            'tag_name' => $tagName,
+        ];
+        $statement = $this->_adapter->createStatement($this->getQuery('getDatasetTag'));
+        $result    = $statement->execute($parameters);
+        if ($result instanceof ResultInterface && $result->isQueryResult()) {
+            $resultSet = new ResultSet;
+            $resultSet->initialize($result);
+            if (count($result) > 0) {
+                //tag already allocated to this dataset
+                return 0;
+            }
+        }
+
+        //If not, add it...
+        //First add into the tag table
+        $tagParams = [
+            'name' => $tagName
+        ];
+        $statement = $this->_adapter->createStatement($this->getQuery('insertTag'));
+        $result    = $statement->execute($tagParams);
+        //then add the database relation
+        $statement = $this->_adapter->createStatement($this->getQuery('insertDatasetTag'));
+        $result    = $statement->execute($parameters);
+
+        //Now get all tags for this dataset and update the dataset metadata field accordingly...
+
+        return 1;
+    }
+
+    public function deleteDatasetTag($id) {
+        $parameters = [
+            'id' => $id
+        ];
+        $statement = $this->_adapter->createStatement($this->getQuery('deleteDatasetTag'));
+        $result    = $statement->execute($parameters);
     }
     
     /**

@@ -25,3 +25,26 @@ create table if not exists collection__dataset
         foreign key (dataset_id) references dataset (id)
             on delete cascade
 );
+
+create table if not exists tag
+(
+    id   int auto_increment
+        primary key,
+    name varchar(50) null,
+    constraint tag_pk
+        unique (name)
+);
+
+create table if not exists dataset__tag
+(
+    id         int auto_increment
+        primary key,
+    dataset_id int not null,
+    tag_id     int not null,
+    constraint dataset__tag_dataset_id_fk
+        foreign key (dataset_id) references dataset (id)
+            on delete cascade,
+    constraint dataset__tag_tag_id_fk
+        foreign key (tag_id) references tag (id)
+            on delete cascade
+);

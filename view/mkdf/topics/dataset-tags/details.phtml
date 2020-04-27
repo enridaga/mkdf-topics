@@ -13,7 +13,47 @@
                     Tags
                 </div>
                 <div class="card-body">
-                    Tags info here...
+                    <?php if (count($tags) > 0): ?>
+                        <table class="table table-sm">
+                            <?php foreach ($tags as $tag) : ?>
+                                <tr>
+                                    <td><?= $this->escapeHtml($tag['name']) ?></td>
+                                    <?php
+                                    $url = $this->url( 'dataset-tags', ['action' => 'delete', 'id' => $dataset->id], [query => ['tag_id' => $tag['id']]]  );
+                                    print ("<td><a class='btn btn-sm btn-danger' href='".$url."'><i class='fas fa-trash-alt'></i></a></td>");
+                                    ?>
+                                </tr>
+                            <?php endforeach; ?>
+                        </table>
+                    <?php else: ?>
+                        <em>No tags have been assigned to this dataset.</em>
+                    <?php endif; ?>
+
+                    <script>
+                        $(document).ready(function() {
+                            $("#inputTag").autocomplete({
+                                //source: ["here", "are", "some", "licences"]
+                                source: <?= json_encode($tagList) ?>
+                            });
+                        });
+                    </script>
+                    <form name="addTagForm" id="addTagForm" method="POST" action="<?=$this->url( 'dataset-tags', ['action' => 'add', 'id' => $dataset->id]); ?>">
+                        <label for="inputTag">Add a new tag for this dataset</label>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <div class="form-group">
+
+                                    <input type="text" class="form-control" name="inputTag" id="inputTag" placeholder="Enter tag name...">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <input type="submit" name="submit" class="btn btn-primary" value="Add">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
                 </div>
             </div>
         </div>
