@@ -47,7 +47,8 @@ class DatasetTagsController extends AbstractActionController
                 'tags' => $tags,
                 'tagList' => $tagList,
                 'features' => $this->datasetsFeatureManager()->getFeatures($id),
-                'actions' => $actions
+                'actions' => $actions,
+                'can_edit' => $can_edit
             ]);
         }
         else {
@@ -80,7 +81,7 @@ class DatasetTagsController extends AbstractActionController
                 $this->flashMessenger()->addSuccessMessage('The tag was added to the dataset.');
             }
             else {
-                $this->flashMessenger()->addSuccessMessage('The tag is already assigned to the dataset.');
+                $this->flashMessenger()->addErrorMessage('The tag is already assigned to the dataset.');
             }
             return $this->redirect()->toRoute('dataset-tags', ['action'=>'details', 'id' => $id]);
         }
