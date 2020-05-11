@@ -24,4 +24,7 @@
 <?= $this->paginationControl($collections,
     'Sliding',
     'application/partial/paginator',
-    ['route' => 'collection']); ?>
+    [
+        'route' => 'collection',
+        'url_params' => $url_params
+    ]); ?>
