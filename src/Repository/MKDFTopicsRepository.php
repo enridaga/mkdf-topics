@@ -379,7 +379,7 @@ class MKDFTopicsRepository implements MKDFTopicsRepositoryInterface
                 $result    = $statement->execute($parameters);
             }
             else {
-                //not exist, insert it
+                //does not exist, insert it
                 $parameters = [
                     'dataset_id' => $datasetId,
                     'meta_value' => $tagString
