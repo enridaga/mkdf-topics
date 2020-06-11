@@ -106,7 +106,7 @@ class DatasetTagsController extends AbstractActionController
         $can_edit = $this->_permissionManager->canEdit($dataset,$user_id);
         $messages = [];
         if($can_edit){
-            $this->_repository->deleteDatasetTag($datasetTagId);
+            $this->_repository->deleteDatasetTag($datasetTagId,$id);
 
             $this->flashMessenger()->addSuccessMessage('Tag removed.');
             return $this->redirect()->toRoute('dataset-tags', ['action'=>'details', 'id' => $id]);

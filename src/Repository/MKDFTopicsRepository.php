@@ -92,6 +92,11 @@ class MKDFTopicsRepository implements MKDFTopicsRepositoryInterface
             'insertTag' => 'INSERT INTO tag (name) VALUES ('.$this->fp('name').') '.
                 'ON DUPLICATE KEY UPDATE name = '.$this->fp('name'),
             'deleteDatasetTag' => 'DELETE FROM dataset__tag WHERE id = '.$this->fp('id'),
+            'getDatasetTagMetadata' => ' SELECT id from dataset__metadata WHERE meta_id = 4 AND dataset_id = '.$this->fp('dataset_id'),
+            'updateDatasetTagMetadata' => 'REPLACE INTO dataset__metadata (id, dataset_id, meta_id, value) VALUES '.
+                '('.$this->fp('id').','.$this->fp('dataset_id').',4,'.$this->fp('meta_value').')',
+            'insertDatasetTagMetadata' => 'INSERT INTO dataset__metadata (dataset_id, meta_id, value) VALUES '.
+                '('.$this->fp('dataset_id').',4,'.$this->fp('meta_value').')',
         ];
     }
 
@@ -328,16 +333,61 @@ class MKDFTopicsRepository implements MKDFTopicsRepositoryInterface
         $result    = $statement->execute($parameters);
 
         //Now get all tags for this dataset and update the dataset metadata field accordingly...
+        $this->_updateTagMetadata($datasetId);
 
         return 1;
     }
 
-    public function deleteDatasetTag($id) {
+    public function deleteDatasetTag($id,$datasetId) {
         $parameters = [
             'id' => $id
         ];
         $statement = $this->_adapter->createStatement($this->getQuery('deleteDatasetTag'));
         $result    = $statement->execute($parameters);
+
+        //Now get all tags for this dataset and update the dataset metadata field accordingly...
+        $this->_updateTagMetadata($datasetId);
+    }
+
+    private function _updateTagMetadata($datasetId) {
+        $parameters = [
+            'dataset_id' => $datasetId
+        ];
+        $tags = $this->datasetTags($datasetId);
+        $tagString = "";
+        foreach ($tags as $tag) {
+            $tagString .= $tag['name'] . ",";
+        }
+        //print($tagString);
+        $parameters = [
+            'dataset_id' => $datasetId
+        ];
+        $statement = $this->_adapter->createStatement($this->getQuery('getDatasetTagMetadata'));
+        $result    = $statement->execute($parameters);
+        if ($result instanceof ResultInterface && $result->isQueryResult()) {
+            $resultSet = new ResultSet;
+            $resultSet->initialize($result);
+            if (count($result) > 0) {
+                //exists, update it
+                $metadataId = $result->current()['id'];
+                $parameters = [
+                    'id'=> $metadataId,
+                    'dataset_id' => $datasetId,
+                    'meta_value' => $tagString
+                ];
+                $statement = $this->_adapter->createStatement($this->getQuery('updateDatasetTagMetadata'));
+                $result    = $statement->execute($parameters);
+            }
+            else {
+                //not exist, insert it
+                $parameters = [
+                    'dataset_id' => $datasetId,
+                    'meta_value' => $tagString
+                ];
+                $statement = $this->_adapter->createStatement($this->getQuery('insertDatasetTagMetadata'));
+                $result    = $statement->execute($parameters);
+            }
+        }
     }
     
     /**
