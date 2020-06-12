@@ -48,6 +48,7 @@ class CollectionController extends AbstractActionController
         return new ViewModel([
             'message' => 'Collections ',
             'collections' => $paginator,
+            'currentUserId'   => $userId,
             'url_params' => $this->params()->fromQuery(),
             'actions' => $actions
         ]);

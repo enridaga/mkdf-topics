@@ -1,5 +1,8 @@
 <h1>Collections</h1>
 <?= $this->partial('mkdf/core/partial/actions', $actions); ?>
+<?php
+$myCollection = false;
+?>
 <table class="table table-bordered">
     <tr class="table-active">
         <th>Title</th>
@@ -7,11 +10,20 @@
         <th>Datasets</th>
     </tr>
     <?php foreach ($collections as $collection) : ?>
-        <tr>
+        <?php
+        $myCollection = ($collection->user_id == $currentUserId) ? true : false;
+        $tr = ($myCollection) ? "<tr class='table-primary'>" : "<tr>";
+        ?>
+        <?= $tr ?>
             <td>
                 <a href="<?= $this->url('collection', ['action' => 'details', 'id' => $collection->id]) ?>">
                     <?= $this->escapeHtml($collection->title) ?>
                 </a>
+                <?php
+                if ($myCollection) {
+                    print ("<i class='fas fa-user-check float-right' data-toggle='tooltip' data-placement='top' title='My collection'></i>");
+                }
+                ?>
             </td>
             <td><?= $this->escapeHtml($collection->description) ?></td>
             <td><?= $this->escapeHtml((int)$collection->dataset_count) ?></td>
