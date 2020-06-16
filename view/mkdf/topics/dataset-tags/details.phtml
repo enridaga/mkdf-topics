@@ -14,7 +14,7 @@
                 </div>
                 <div class="card-body">
                     <?php if (count($tags) > 0): ?>
-                        <table class="table table-sm">
+                        <table class="table table-sm table-no-top-border">
                             <?php foreach ($tags as $tag) : ?>
                                 <tr>
                                     <td><?= $this->escapeHtml($tag['name']) ?></td>
