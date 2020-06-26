@@ -155,7 +155,7 @@ class CollectionController extends AbstractActionController
             $token = uniqid(true);
             $container = new Container('Collections_Management');
             $container->delete_token = $token;
-            $messages[] = [ 'type'=> 'warning', 'message' =>
+            $messages[] = [ 'type'=> 'danger', 'message' =>
                 'Are you sure you want to delete this collection?'];
             return new ViewModel(['collection' => $collection, 'token' => $token, 'messages' => $messages]);
         }else{
