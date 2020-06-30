@@ -44,7 +44,8 @@ class DatasetCollectionsController extends AbstractActionController
                 'dataset' => $dataset,
                 'collections' => $collections,
                 'features' => $this->datasetsFeatureManager()->getFeatures($id),
-                'actions' => $actions
+                'actions' => $actions,
+                'user'  => $this->currentUser()
             ]);
         }
         else {

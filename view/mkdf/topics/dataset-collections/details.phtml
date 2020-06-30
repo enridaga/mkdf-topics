@@ -8,12 +8,13 @@
             <h2>Collections</h2>
             <?= $this->partial('mkdf/core/partial/actions', $actions); ?>
 
+            <?php if (count($collections) > 0): ?>
             <div class="card">
                 <div class="card-header">
                     The dataset appears in the following collections
                 </div>
                 <div class="card-body">
-                    <?php if (count($collections) > 0): ?>
+
                         <table class="table table-sm table-no-top-border">
                             <?php foreach ($collections as $collection) : ?>
                                 <tr>
@@ -21,18 +22,20 @@
                                     $url = $this->url( 'collection', ['action' => 'details', 'id' => $collection->id]);
                                     ?>
                                     <td><a href="<?= $url ?>"><?= $this->escapeHtml($collection['title']) ?></a></td>
-                                    <td><?= $this->escapeHtml($collection['description']) ?></td>
+                                    <!--<td><?= $this->escapeHtml($collection['description']) ?></td>-->
 
                                 </tr>
                             <?php endforeach; ?>
                         </table>
-                    <?php else: ?>
-                        <em>This dataset has not yet been added to a collection.</em>
-                    <?php endif; ?>
                 </div>
             </div>
-            <hr />
-            <p><em><a href="<?= $this->url( 'collection', ['action' => 'index']) ?>">Datasets can be added or removed from collections here.</a></em></p>
+                    <?php elseif ($user->getId() == -1): ?>
+                        <em>This dataset has not yet been added to a collection.</em>
+                    <?php else: ?>
+                        <em>This dataset has not yet been added to a collection.</em>
+                        <hr />
+                        <p><em><a href="<?= $this->url( 'collection', ['action' => 'index']) ?>">Datasets can be added or removed from collections here.</a></em></p>
+                    <?php endif; ?>
         </div>
     </div>
 </div>
